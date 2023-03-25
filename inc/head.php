@@ -5,7 +5,7 @@
 <title>314n</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
-
+<meta name="viewport" content="width=device-width">
 <link id="favicon" rel="shortcut icon" href="f1.png" type="image/x-icon">
 <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen, projection">
 <link rel="stylesheet" type="text/css" href="css/scrollbars.css">

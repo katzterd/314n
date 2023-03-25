@@ -136,3 +136,16 @@ a, a:hover, a:visited, a:link {
   border-radius: 3px;
   border: 1px solid black;
 }
+@media (max-width: 768px) {
+  #board {
+    margin:8px 12px;
+  }
+  div.border {
+    display:none;
+  }
+  #scrollTest {
+    margin: 0!important;
+    width: 100%!important;
+    height: 100%!important;
+  }
+}
