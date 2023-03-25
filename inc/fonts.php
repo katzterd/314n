@@ -49,15 +49,11 @@ class Fonts {
 
     public function getCSS($dynamic=false) {
         if (isset($this->font) && $this->font['name'] != 'Default') {
-            return ($dynamic 
-                ? ''
-                : '<link rel="preconnect" href="https://fonts.googleapis.com">'
-                 .'<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-            ). '<link href="https://fonts.googleapis.com/css2?family='.str_replace(' ', '+', $this->font['name']).':'.$this->font['q'].'&display=swap" rel="stylesheet">'
-             . '<style>#console { font-family: "'.$this->font['name'].'", monospace }</style>';
+            return '<link href="https://fonts.googleapis.com/css2?family='.str_replace(' ', '+', $this->font['name']).':'.$this->font['q'].'&display=swap" rel="stylesheet">'
+             . '<style>#console { font-family: "'.$this->font['name'].'", "Noto Emoji", monospace }</style>';
         }
         elseif($dynamic) {
-            return '<style>#console { font-family: "Courier New", Courier, monospace }</style>';
+            return '<style>#console { font-family: "Courier New", Courier, "Noto Emoji", monospace }</style>';
         }
         return '';
     }
