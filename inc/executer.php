@@ -53,6 +53,29 @@ class Executer {
         $this->$func($args);
     }
 
+    private function SETFONT($args) {
+        require_once realpath(dirname(__FILE__)).'/fonts.php';
+        $id = $args['f'];
+        $fonts = new Fonts($id);
+        if ($fonts->valid) {
+            Viewer::message('Font set: ' . $fonts->font['name'], $fonts->getCSS(true));
+        }
+        else {
+            Viewer::error('Font #'.$id.' not found. Select the font from 0 to '.($fonts->total - 1));
+        }
+        return $id;
+    }
+
+    private function LISTFONTS($args) {
+        require_once realpath(dirname(__FILE__)).'/fonts.php';
+        $fonts = Fonts::get_all();
+        $msg = '';
+        foreach($fonts as $i => &$font) {
+            $msg .= '['.$i.'] '.$font['name'].'<br>';
+        }
+        Viewer::message($msg);
+    }
+
     private function get_user_code($number) {
         $number--;
         $code = strtoupper(base_convert($number, 10, 26));
@@ -673,6 +696,8 @@ class Executer {
 <div style="padding:2px"><span class="reverse">&nbsp;LOGOUT&nbsp;</span> Logs out a user who is logged into 314n.</div>
 <div style="padding:2px"><span class="reverse">&nbsp;INVITES&nbsp;</span> Displays yours invates.</div>
 <div style="padding:2px"><span class="reverse">&nbsp;REFRESH&nbsp;</span> Refresh the page.</div>
+<div style="padding:2px"><span class="reverse">&nbsp;LISTFONTS&nbsp;</span> List available fonts.</div>
+<div style="padding:2px"><span class="reverse">&nbsp;SETFONT -f &lt;font #&gt;&nbsp;</span> Set font.</div>
 
 <br><br>Commands for all:
 

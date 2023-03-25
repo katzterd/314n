@@ -5,11 +5,12 @@ class Viewer
 {
     private function __construct() { }
     
-    static function message($message) {
+    static function message($message, $css='') {
         self::output(array(
             'clear'=>0,
             'message'=>'<div class="message">'.$message.'</div>',
-            'path'=>''
+            'path'=>'',
+            'css'=>$css
         ));
     }
     

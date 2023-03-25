@@ -11,10 +11,10 @@ class Console
     
     private function init_rules() {
         $this->rules = array(
-                 'HELP' => array(
+                'HELP' => array(
                     'args' => array(),
                     'session' => array(0=>array(), 1=>array())
-                 ),
+                ),
                 'DONATE' => array(
                     'args' => array(),
                     'session' => array(0=>array(), 1=>array())
@@ -94,6 +94,14 @@ class Console
                 'REFRESH' => array(
                     'args' => array(),
                     'session' => array(0=>array(), 1=>array('user_id', 'view'))
+                ),
+                'SETFONT' => array(
+                    'args' => array('f'=>'id'),
+                    'session' => array(0=>array(), 1=>array())
+                ),
+                'LISTFONTS' => array(
+                    'args' => array(),
+                    'session' => array(0=>array(), 1=>array())
                 ),
         );
     }

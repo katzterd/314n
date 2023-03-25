@@ -82,6 +82,7 @@ $(document).ready(function() {
                         $('#content').append(response.message);
                         if (response.path) $('#path').html(response.path+'&nbsp;>&nbsp;');
                         if (response.clear) loading();
+                        if (response.css) $(document.head).append(response.css)
                         else nav_down();
                     }
                 }

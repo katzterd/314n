@@ -16,7 +16,7 @@ div.content {
 }
 textarea#cmd {
   outline: none;
-  font-family: "Courier New", Courier, monospace;
+  font-family: inherit;
   font-size: 11pt;
   color: #5FBFFF;
   padding:0;

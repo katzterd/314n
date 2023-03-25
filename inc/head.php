@@ -14,6 +14,12 @@
 <!--<link rel="stylesheet" type="text/css" href="css/scrollbars-itunes.css" />-->
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <!--[if lte IE 6 ]><script type="text/javascript">window.location.href="ie6/index_ru.html";</script><![endif]-->
+
+<?php 
+require_once realpath(dirname(__FILE__)).'/fonts.php';
+$fonts = new Fonts();
+echo $fonts->getCSS();
+?>
     
 <script src="js/jquery.min.js" type="text/javascript"></script>
 <script src="js/jquery.event.drag-2.0.min.js" type="text/javascript"></script>
