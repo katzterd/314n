@@ -159,3 +159,7 @@ a, a:hover, a:visited, a:link {
     background: rgb(95 191 255 / 7%);
   }
 }
+*::selection {
+  background: #5fbfff;
+  color: #000;
+}
