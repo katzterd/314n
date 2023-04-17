@@ -481,8 +481,8 @@ class Executer {
     
     private function NEWTOPIC($args) {
         $res = $this->connection->query('
-            INSERT INTO posts (user_id, board_id, title, topic_id, content, creation_date, bump_date) VALUES
-            ("'.$_SESSION['user_id'].'", "'.$_SESSION['board_id'].'", "'.$args['t'].'", "0", "'.$args['c'].'", NOW(), NOW())
+            INSERT INTO posts (user_id, board_id, title, topic_id, content, creation_date, bump_date, hidden) VALUES
+            ("'.$_SESSION['user_id'].'", "'.$_SESSION['board_id'].'", "'.$args['t'].'", "0", "'.$args['c'].'", NOW(), NOW(), "'.(@$_SESSION['hidden']==1 ? 1 : 0).'")
         ');
         
         $topic_id = $this->connection->insert_id;
@@ -550,7 +550,9 @@ class Executer {
                 while ($row = mysqli_fetch_assoc($posts_res)) {
                     
                     $is_op = $row['user_id'] == $thread['user_id'];
-                    $user_code = $is_op ? '[OP]' : $this->get_user_code($row['code']);
+                    $user_code = $row['hidden']
+                        ? '[<i>anon</i>]'
+                        : ($is_op ? '[OP]' : $this->get_user_code($row['code']));
                     $content.= '<table class="post"><tr>
                                   <td class="post-gt">&gt;</td>
                                   <td class="post-code">'.$user_code.'</td>
@@ -598,8 +600,8 @@ class Executer {
         } else {
             
             $res_post = $this->connection->query('
-                INSERT INTO posts (user_id, board_id, topic_id, content, creation_date)
-                VALUES ("'.$_SESSION['user_id'].'", "'.$_SESSION['board_id'].'", "'.$_SESSION['topic_id'].'", "'.$args['m'].'", NOW())
+                INSERT INTO posts (user_id, board_id, topic_id, content, creation_date, hidden)
+                VALUES ("'.$_SESSION['user_id'].'", "'.$_SESSION['board_id'].'", "'.$_SESSION['topic_id'].'", "'.$args['m'].'", NOW(), "'.(@$_SESSION['hidden']==1 ? 1 : 0).'")
             ');
             
             $this->connection->query('UPDATE posts SET bump_date = NOW() WHERE id = "'.$_SESSION['topic_id'].'"');            
@@ -719,7 +721,15 @@ class Executer {
         }
     }
 
+    private function HIDEME() {
+        $_SESSION['hidden'] = true;
+        Viewer::message('You are now hidden');
+    }
 
+    private function SHOWME() {
+        $_SESSION['hidden'] = false;
+        Viewer::message('You are no longer hidden');
+    }
 
     private function TIMEZONE($args) {
         $res = $this->connection->query('SET time_zone = "'.$args['u'].'"');
@@ -755,12 +765,12 @@ class Executer {
     
     private function DONATE($args) {
         Viewer::message('<div style="padding:2px">Donations are unforced, gratuitous and anonymous. The collected funds will be used to pay for internets, domains and hosting.</div>
-		
-		<br><div style="padding:2px"><span class="reverse">&nbsp;YANDEX.MONEY&nbsp;</span> 41001746010947</div>
-		<div style="padding:2px"><span class="reverse">&nbsp;QIWI&nbsp;</span> qiwi.me/314n</div>
-		<div style="padding:2px"><span class="reverse">&nbsp;OTHER&nbsp;</span> z@314n.org</div>
-		
-		<br><div style="padding:2px">Thanks you!</div>');
+        
+        <br><div style="padding:2px"><span class="reverse">&nbsp;YANDEX.MONEY&nbsp;</span> 41001746010947</div>
+        <div style="padding:2px"><span class="reverse">&nbsp;QIWI&nbsp;</span> qiwi.me/314n</div>
+        <div style="padding:2px"><span class="reverse">&nbsp;OTHER&nbsp;</span> z@314n.org</div>
+        
+        <br><div style="padding:2px">Thanks you!</div>');
     }
     
     private function HELP($args) {

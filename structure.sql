@@ -75,7 +75,8 @@ CREATE TABLE `posts` (
   `content` text NOT NULL,
   `changing_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `creation_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `bump_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `bump_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `hidden` TINYINT(1) UNSIGNED NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

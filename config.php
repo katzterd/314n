@@ -14,6 +14,7 @@ define('IDENTIFY_GUESTS_BY_IP', true); // Whether or not guest user IDs should b
 define('LOCAL_IP_LIST', '127.0.0.1 0.0.0.0'); // Space-separated list of IPs that are treated as local: guests accessing from these IPs will not be identified by IP, each getting a unique identifier instead. Useful if your site has mirrors in hidden networks
 define('STORE_USER_IP', false); // Store the last IP the user has logged in unhashed in the database, just for fun
 define('GUEST_ACCOUNT_TTL', 60*60*24*30); // After what period (in seconds) of inactivity guest accounts must be deleted. Default is one month; set to 0 to never delete guest accounts
+define('ALLOW_ANONYMOUS_POSTING', true); // Whether or not HIDEME and SHOWME commands that allow users to hide or reveal their identity should be supported
 
 error_reporting(E_ALL ^ E_NOTICE);
 set_error_handler(function(int $errno, string $errstr) {

@@ -102,8 +102,23 @@ class Console
                 'LISTFONTS' => array(
                     'args' => array(),
                     'session' => array(0=>array(), 1=>array())
-                ),
+                )
         );
+        if (ALLOW_ANONYMOUS_POSTING) {
+            $commands = array(
+                'HIDEME' => array(
+                    'args' => array(),
+                    'session' => array(0=>array(), 1=>array('user_id'))
+                ),
+                'SHOWME' => array(
+                    'args' => array(),
+                    'session' => array(0=>array(), 1=>array('user_id'))
+                )
+            );
+            foreach ($commands as $k => $v) {
+                $this->rules[$k] = $v;
+            }
+        }
     }
     
     private function check_command() {

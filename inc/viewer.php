@@ -24,6 +24,8 @@ class Viewer
     
     static function content($content, $path) {
         $content = mb_ereg_replace('  ', ' ', $content);
+        if ($_SESSION['hidden'])
+            $path .= ' [a]';
         $path = mb_ereg_replace(' ', '&nbsp;', $path);
         
         self::output(array(
