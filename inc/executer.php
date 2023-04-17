@@ -802,8 +802,12 @@ class Executer {
 <div style="padding:2px"><span class="reverse">&nbsp;FIRST&nbsp;</span> Go to the first page.</div>
 <div style="padding:2px"><span class="reverse">&nbsp;LAST&nbsp;</span> Go to the last page.</div>
 <div style="padding:2px"><span class="reverse">&nbsp;PAGE -p &lt;page&gt;&nbsp;</span> Go to page with required number.</div>
-<div style="padding:2px"><span class="reverse">&nbsp;NEWTOPIC -t &lt;title&gt; -c &lt;content&gt;&nbsp;</span> Create a new topic.</div> 
-<div style="padding:2px"><span class="reverse">&nbsp;LOGOUT&nbsp;</span> Logs out a user who is logged into 314n.</div>
+<div style="padding:2px"><span class="reverse">&nbsp;NEWTOPIC -t &lt;title&gt; -c &lt;content&gt;&nbsp;</span> Create a new topic.</div>'.
+(ALLOW_ANONYMOUS_POSTING
+    ? '<div style="padding:2px"><span class="reverse">&nbsp;HIDEME&nbsp;</span> Hide your identity.</div> 
+       <div style="padding:2px"><span class="reverse">&nbsp;SHOWME&nbsp;</span> Reveal your identity.</div>'
+    : '')
+.'<div style="padding:2px"><span class="reverse">&nbsp;LOGOUT&nbsp;</span> Logs out a user who is logged into 314n.</div>
 <div style="padding:2px"><span class="reverse">&nbsp;INVITES&nbsp;</span> Displays yours invates.</div>
 <div style="padding:2px"><span class="reverse">&nbsp;REFRESH&nbsp;</span> Refresh the page.</div>
 <div style="padding:2px"><span class="reverse">&nbsp;LISTFONTS&nbsp;</span> List available fonts.</div>
