@@ -31,20 +31,77 @@ class Executer {
         $this->now = $now_row['n'];
         
         $this->connection->query('
-                UPDATE users SET
-                  ip = "'.$_SERVER['REMOTE_ADDR'].'",
-                  last_activity = NOW()
-                WHERE id = "'.$_SESSION['user_id'].'"');
+            UPDATE users SET
+              ip = "'.(STORE_USER_IP ? $_SERVER['REMOTE_ADDR'] : '').'",
+              last_activity = NOW()
+            WHERE id = "'.$_SESSION['user_id'].'"');
+        
+        if (GUEST_ACCOUNT_TTL) { // purge old guest accounts
+            $this->connection->query('DELETE FROM users WHERE name like "guest#%" AND (NOW() - last_activity) > '.GUEST_ACCOUNT_TTL);
+        }
     }
     
     public function check_login() {
-        unset($_SESSION['edit']);
+        $user = null;
+        $need_auth_cookie = !isset($_COOKIE['auth_hash']);
+        // Try session login
         if ($_SESSION['user_id']) {
-            $row_name = $this->connection->query(
-                    'SELECT name FROM users WHERE id = "'.$_SESSION['user_id'].'"'
+            $user = $this->connection->query(
+                'SELECT id, name, password FROM users WHERE id = "'.$_SESSION['user_id'].'"'
             )->fetch_assoc();
-            if ($row_name) return '<br>You are logged in as '.$row_name['name'].'<br><br>';
+            if (!$user) { // This normally should not happen
+                unset($_SESSION['user_id']);
+            }
         }
+        // Try auth hash login 
+        if(!$user && $_COOKIE['auth_hash']) {
+            $user = $this->connection->query(
+                'SELECT id, name, password FROM users WHERE public_hash="'.$_COOKIE['auth_hash'].'"'
+            )->fetch_assoc();
+        }
+        // Create a guest account or login with IP
+        if (!$user && ALLOW_GUESTS) {
+            $use_ip = IDENTIFY_GUESTS_BY_IP && !in_array($_SERVER['REMOTE_ADDR'], explode(' ', LOCAL_IP_LIST));
+            $pwd_src = $use_ip
+                ? $_SERVER['REMOTE_ADDR']
+                : random_bytes(32);
+            $pwd = hash('sha256', $pwd_src.HASHING_SALT);
+            if ($use_ip) {
+                $user = @$this->connection->query(
+                    'SELECT id, name, password FROM users WHERE password = "'.$pwd.'"'
+                )->fetch_assoc();
+            }
+            if (!$user) {
+                while (@$exists!=='0') { // Ensure username uniqueness
+                    $uid_hash = substr(base_convert(md5(random_bytes(8)), 16, 36), 0, 4);
+                    $user_name = 'guest#' . $uid_hash;
+                    $exists = @$this->connection->query('SELECT COUNT(1) as x FROM users WHERE name="'.$user_name.'"')->fetch_assoc()['x'];
+                }
+                $user = $this->create_user($user_name, $pwd);
+            }
+        }
+        if ($user) {
+            if (!isset($_SESSION['user_id']))
+                $_SESSION['user_id'] = $user['id'];
+            if ($need_auth_cookie) {
+                $this->give_auth_cookie($user);
+            }
+            $_SESSION['is_guest'] = substr($user['name'], 0, 6) === 'guest#';
+            return '<br>You are logged in as '.$user['name'].'<br><br>';
+        }
+        elseif (isset($_COOKIE['auth_hash']) && $need_auth_cookie) { // Auth hash is corrupt
+            $this->unset_auth_cookie();
+        }
+    }
+
+    private function give_auth_cookie($user) {
+        $auth_hash = hash('sha256', $user['name'] . $user['password'] . PUBLIC_HASHING_SALT);
+        $this->connection->query('UPDATE users SET public_hash = "'.$auth_hash.'" WHERE name = "'.$user['name'].'"');
+        setcookie("auth_hash", $auth_hash, time()+31556926);
+    }
+
+    private function unset_auth_cookie() {
+        setcookie("auth_hash", "", time()-3600);
     }
 
     public function execute($command) {
@@ -259,34 +316,76 @@ class Executer {
                 $this->connection->query('DELETE FROM invites WHERE id = "'.$invite['id'].'"');
             }
           */
-            
-            $res = $this->connection->query('
-                    INSERT INTO users (name, password)
-                    VALUES ("'.$args['u'].'", "'.md5($args['p']).'")'
-            );
-            
-            $user_id = $this->connection->insert_id;
-            
-            if ($res) {
-                $this->connection->query('INSERT INTO invites (user_id, invite) VALUES ("'.$user_id.'", "'.$this->generate_invite_code().'")');
-                $this->connection->query('INSERT INTO invites (user_id, invite) VALUES ("'.$user_id.'", "'.$this->generate_invite_code().'")');
-                
-                Viewer::message('you are now registered');
+            $pwd = hash('sha256', $args['p'].HASHING_SALT);
+
+            if ($_SESSION['is_guest'] && isset($_SESSION['user_id'])) { // Promote a guest to a regular user
+                $promoted = $this->connection->query(
+                    'UPDATE users SET name = "'.$args['u'].'", password = "'.$pwd.'" WHERE id="'.$_SESSION['user_id'].'"');
+                if ($promoted) {
+                    $this->give_auth_cookie(array('name' => $args['u'], 'password' => $pwd));
+                    $_SESSION['is_guest'] = false;
+                    Viewer::message('you are now promoted to a regular user');
+                }
+                else
+                    Viewer::error('registration error');
             }
-            else Viewer::error('registration error');
+            else {
+                if ($created)
+                    Viewer::message('you are now registered');
+                else 
+                    Viewer::error('registration error');
+            }
         }
+    }
+
+    private function promote_user() {
+
+    }
+
+    private function create_user($name, $pwd) {
+        $res = $this->connection->query('
+            INSERT INTO users (name, password)
+            VALUES ("'.$name.'", "'.$pwd.'")'
+        );
+        
+        $user_id = $this->connection->insert_id;
+        
+        if ($res) {
+            $this->connection->query('INSERT INTO invites (user_id, invite) VALUES ("'.$user_id.'", "'.$this->generate_invite_code().'")');
+            $this->connection->query('INSERT INTO invites (user_id, invite) VALUES ("'.$user_id.'", "'.$this->generate_invite_code().'")');
+            
+            return array(
+                'id' => $user_id,
+                'name' => $name,
+                'password' => $pwd
+            );
+        }
+    }
+
+    private function check_creds($name, $pwd) {
+        return $this->connection->query('
+            SELECT id, name, password
+            FROM users
+            WHERE name = "'.$name.'"
+            AND password = "'.$pwd.'"'
+        )->fetch_assoc();
     }
     
     private function LOGIN($args) {
-        $user = $this->connection->query('
-            SELECT id
-            FROM users
-            WHERE name = "'.strtolower($args['u']).'"
-            AND password = "'.md5($args['p']).'"'
-        )->fetch_assoc();
-        
+        $name = strtolower($args['u']);
+        $pass256 = hash('sha256', $args['p'].HASHING_SALT);
+        $user = $this->check_creds($name, $pass256);
+        if (!$user && ALLOW_LEGACY_HASHES) {
+            $user = $this->check_creds($name, md5($args['p']));
+            if ($user) { // re-hash the password
+                $this->connection->query(
+                    'UPDATE users SET password = "'.$pass256.'" WHERE id = "'.$user['id'].'"');
+                $user['password'] = $pass256;
+            }
+        }
         if ($user) {
             $_SESSION['user_id'] = $user['id'];
+            $this->give_auth_cookie($user);
             Viewer::message('you are logged in');
         } else {
             Viewer::error('incorrect username or password');
@@ -298,6 +397,7 @@ class Executer {
         foreach ($_SESSION as $key => $value) {
             unset($_SESSION[$key]);
         }
+        $this->unset_auth_cookie();
         Viewer::message('You have been logged out');
     }
     

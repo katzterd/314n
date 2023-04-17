@@ -120,7 +120,13 @@ class Console
         }
         
         foreach ($this->rules[$this->command['command']]['session'][0] as $variable) {
-            if ($_SESSION[$variable]) {
+            if (
+                $_SESSION[$variable]
+                && !( // Special case: guest promotion to user
+                    $this->command['command'] == 'REGISTER'
+                    && $_SESSION['is_guest']
+                )
+            ) {
                 $this->error = '"'.$this->command['command'].'" is not a valid command or is not available in the current context';
                 return false;
             }
@@ -128,8 +134,15 @@ class Console
         
         foreach ($this->rules[$this->command['command']]['session'][1] as $variable) {
             if (!$_SESSION[$variable]) {
-                $this->error = '"'.$this->command['command'].'" is not a valid command or is not available in the current context';
-                return false;
+                // Attempt transparent login
+                if ($variable == 'user_id') {
+                    $executer = new Executer();
+                    $logged_in = $executer->check_login();
+                }
+                elseif (@!$logged_in) {
+                    $this->error = '"'.$this->command['command'].'" is not a valid command or is not available in the current context';
+                    return false;
+                }
             }
         }
         
@@ -138,7 +151,7 @@ class Console
     public function __construct() {
         $this->init_rules();
         session_start();
-        
+
         if (@$_SESSION['edit']) {
             $input = (!isset($_POST['input_i']) || (isset($_POST['multiline']) && $_POST['multiline']==1))
               ? $_POST['input']

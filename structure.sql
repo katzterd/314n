@@ -91,7 +91,8 @@ CREATE TABLE `users` (
   `last_activity` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `timezone` varchar(6) NOT NULL DEFAULT '+04:00',
   `ip` varchar(15) NOT NULL DEFAULT '0.0.0.0',
-  `banned` tinyint(1) NOT NULL DEFAULT '0'
+  `banned` tinyint(1) NOT NULL DEFAULT '0',
+  `public_hash` CHAR(64) NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
 
 -- --------------------------------------------------------
