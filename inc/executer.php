@@ -445,7 +445,7 @@ class Executer {
                 LIMIT '.($_SESSION['page']-1)*self::topics_per_page.', '.self::topics_per_page
             );
             
-            $this->display_topics($head, $topics_res, $pages_count, $path);
+            $this->display_topics($head, $topics_res, $pages_count, $path, true);
         }  
     }
     
@@ -551,7 +551,7 @@ class Executer {
                     
                     $is_op = $row['user_id'] == $thread['user_id'];
                     $user_code = $row['hidden']
-                        ? '[<i>anon</i>]'
+                        ? '<i title="Anonymous">@</i>'
                         : ($is_op ? '[OP]' : $this->get_user_code($row['code']));
                     $content.= '<table class="post"><tr>
                                   <td class="post-gt">&gt;</td>
@@ -567,7 +567,7 @@ class Executer {
                 
                 $content .= '<br><br>';
                 
-                Viewer::content($content, 'TOPIC&nbsp;'.$thread['id'].'&nbsp;'.$_SESSION['page'].'/'.$this->get_topics_pages_count($thread['id']));
+                Viewer::content($content, 'TOPIC&nbsp;'.$thread['id'].'&nbsp;'.$_SESSION['page'].'/'.$this->get_topics_pages_count($thread['id']), true);
             }
         }
     }
@@ -723,12 +723,12 @@ class Executer {
 
     private function HIDEME() {
         $_SESSION['hidden'] = true;
-        Viewer::message('You are now hidden');
+        Viewer::message('You are now posting anonymously', '', 1);
     }
 
     private function SHOWME() {
         $_SESSION['hidden'] = false;
-        Viewer::message('You are no longer hidden');
+        Viewer::message('You are no longer posting anonymously', '', 0);
     }
 
     private function TIMEZONE($args) {
@@ -953,7 +953,7 @@ class Executer {
     
     
     
-    private function display_topics($head, $topics_res, $pages_count, $path) {
+    private function display_topics($head, $topics_res, $pages_count, $path, $disaply_anon_status=false) {
         
         $content = $head;
         
@@ -969,9 +969,8 @@ class Executer {
                       <div class="pm">&nbsp;Made '.$this->format_date($row['creation_date']).' | Bumped '.$this->format_date($row['bump_date']).'</div></td>
                 </tr></table>
             ';
-        }
-            
-        Viewer::content($content, $path);
+        }  
+        Viewer::content($content, $path, $disaply_anon_status);
     }
 }
 ?>

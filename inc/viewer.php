@@ -5,13 +5,17 @@ class Viewer
 {
     private function __construct() { }
     
-    static function message($message, $css='') {
-        self::output(array(
+    static function message($message, $css='', $anon_status=false) {
+        $out = array(
             'clear'=>0,
             'message'=>'<div class="message">'.$message.'</div>',
             'path'=>'',
             'css'=>$css
-        ));
+        );
+        if ($anon_status !== false) {
+            $out['anon'] = $anon_status;
+        }
+        self::output($out);
     }
     
     static function error($error) {
@@ -22,10 +26,10 @@ class Viewer
         ));
     }
     
-    static function content($content, $path) {
+    static function content($content, $path, $disaply_anon_status=false) {
         $content = mb_ereg_replace('  ', ' ', $content);
-        if ($_SESSION['hidden'])
-            $path .= ' [a]';
+        if ($disaply_anon_status && $_SESSION['hidden'])
+            $path .= '&nbsp;[@]';
         $path = mb_ereg_replace(' ', '&nbsp;', $path);
         
         self::output(array(

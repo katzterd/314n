@@ -83,6 +83,8 @@ $(document).ready(function() {
                         if (response.path) $('#path').html(response.path+'&nbsp;>&nbsp;');
                         if (response.clear) loading();
                         if (response.css) $(document.head).append(response.css)
+                        if (typeof response.anon != 'undefined')
+                            change_anon_status(response.anon)
                         else nav_down();
                     }
                 }
@@ -91,3 +93,16 @@ $(document).ready(function() {
         }
     });
 });
+
+function change_anon_status(enable) {
+    console.log('c')
+    var currentPath = $('#path').text()
+    , currentlyAnon = ~currentPath.indexOf('[@]')
+    console.log(currentlyAnon)
+    if (['TOPIC', 'BOARD'].find(context => currentPath.indexOf(context + ' ') == 0)) {
+        if (enable && !currentlyAnon)
+            $('#path').text(currentPath.replace(' >', ' [@] >'))
+        else if(!enable && currentlyAnon)
+            $('#path').text(currentPath.replace(' [@]', ''))
+    }
+}
