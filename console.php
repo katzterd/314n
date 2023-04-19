@@ -138,7 +138,7 @@ class Console
             if (
                 $_SESSION[$variable]
                 && !( // Special case: guest promotion to user
-                    $this->command['command'] == 'REGISTER'
+                    ($this->command['command'] == 'REGISTER' || $this->command['command'] == 'LOGIN')
                     && $_SESSION['is_guest']
                 )
             ) {
