@@ -32,7 +32,8 @@ CREATE TABLE `boards` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `public` tinyint(1) NOT NULL
+  `public` tinyint(1) NOT NULL,
+  `owner` INT(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
 
 -- --------------------------------------------------------
@@ -93,7 +94,8 @@ CREATE TABLE `users` (
   `timezone` varchar(6) NOT NULL DEFAULT '+04:00',
   `ip` varchar(15) NOT NULL DEFAULT '0.0.0.0',
   `banned` tinyint(1) NOT NULL DEFAULT '0',
-  `public_hash` CHAR(64) NULL DEFAULT NULL
+  `public_hash` CHAR(64) NULL DEFAULT NULL,
+  `authority` ENUM('user','admin','mod') NOT NULL DEFAULT 'user'
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
 
 -- --------------------------------------------------------

@@ -102,6 +102,14 @@ class Console
                 'LISTFONTS' => array(
                     'args' => array(),
                     'session' => array(0=>array(), 1=>array())
+                ),
+                'NEWBOARD' => array(
+                    'args' => array('n'=>'name', 'd'=>'description'),
+                    'session' => array(0=>array(), 1=>array('user_id'))
+                ),
+                'DELETEBOARD' => array(
+                    'args' => array('n'=>'number'),
+                    'session' => array(0=>array(), 1=>array('user_id'))
                 )
         );
         if (ALLOW_ANONYMOUS_POSTING) {

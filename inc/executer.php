@@ -950,6 +950,64 @@ class Executer {
         
         return $bbcode;
     }
+
+    private function NEWBOARD($args) {
+        $user = $this->connection->query('SELECT id, name, authority FROM users WHERE id="'.$_SESSION['user_id'].'"')->fetch_assoc();
+        if (ALLOW_USER_BOARDS) {
+            if (substr($user['name'], 0, 6) == 'guest#') {
+                Viewer::error('Board creation for guests is not allowed');
+                return;
+            }
+        }
+        else if ($user['authority'] != 'admin') {
+            Viewer::error('Board creation for users is not allowed');
+            return;
+        }
+        $board = $this->connection->query('SELECT COUNT(1) as `exists` FROM boards WHERE name="'.$args['n'].'"')->fetch_assoc();
+        if ($board['exists']) {
+            Viewer::error('Board with this name already exists');
+            return;
+        }
+        if (BOARDS_PER_USER > 0) {
+            $my = $this->connection->query('SELECT COUNT(1) as `boards` FROM boards WHERE owner = "'.$_SESSION['user_id'].'"')->fetch_assoc();
+            if ($my['boards'] >= BOARDS_PER_USER) {
+                Viewer::error('You cannot create more than '.BOARDS_PER_USER.' boards');
+                return;
+            }
+        }
+        $ins = $this->connection->query('
+            INSERT INTO boards (name, description, public, owner)
+            VALUES ("'.$args['n'].'", "'.$args['d'].'", "1", "'.$user['id'].'")
+        ');
+        if (!$ins) {
+            Viewer::error('Error creating board');
+        } else {
+            $board_id = $this->connection->insert_id;
+            $this->BOARD(array('n'=>$board_id));
+        }
+    }
+
+    private function DELETEBOARD($args) {
+        $board = $this->connection->query('SELECT owner FROM boards WHERE id="'.$args['n'].'"')->fetch_assoc();
+        if (!$board) {
+           Viewer::error('The board does not exist');
+           return; 
+        }
+        if ($board['owner'] != $_SESSION['user_id']) {
+            $user = $this->connection->query('SELECT authority FROM users WHERE id="'.$_SESSION['user_id'].'"')->fetch_assoc();
+            if (@$user['authority'] != 'admin') {
+                Viewer::error('You are not the owner of the board');
+                return;
+            }
+        }
+        $del = $this->connection->query('DELETE from boards WHERE id="'.$args['n'].'"');
+        if ($del) {
+            Viewer::message('The board has been deleted');
+        }
+        else {
+            Viewer::error('Error deleting board');
+        }
+    }
     
     
     

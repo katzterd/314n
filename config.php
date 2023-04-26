@@ -16,6 +16,9 @@ define('STORE_USER_IP', false); // Store the last IP the user has logged in unha
 define('GUEST_ACCOUNT_TTL', 60*60*24*30); // After what period (in seconds) of inactivity guest accounts must be deleted. Default is one month; set to 0 to never delete guest accounts
 define('ALLOW_ANONYMOUS_POSTING', true); // Whether or not HIDEME and SHOWME commands that allow users to hide or reveal their identity should be supported
 
+define('ALLOW_USER_BOARDS', false); // Whether or not users should be allowed to create new boards
+define('BOARDS_PER_USER', 1); // How many boards a regular user can create; 0 for unlimited
+
 error_reporting(E_ALL ^ E_NOTICE);
 set_error_handler(function(int $errno, string $errstr) {
   if ((strpos($errstr, 'Undefined array key') === false) && (strpos($errstr, 'Undefined variable') === false)) {
