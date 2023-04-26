@@ -37,4 +37,5 @@ ALTER TABLE `users`
 	ADD COLUMN `authority` ENUM('user','admin','mod') NOT NULL DEFAULT 'user' AFTER `public_hash`;
 ALTER TABLE `boards`
 	ADD COLUMN `owner` INT(11) NOT NULL AFTER `public`;
+UPDATE `boards` SET `owner`=1 WHERE 1; # Where '1' is admin's user ID
 ```
