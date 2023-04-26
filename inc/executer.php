@@ -802,7 +802,9 @@ class Executer {
 <div style="padding:2px"><span class="reverse">&nbsp;FIRST&nbsp;</span> Go to the first page.</div>
 <div style="padding:2px"><span class="reverse">&nbsp;LAST&nbsp;</span> Go to the last page.</div>
 <div style="padding:2px"><span class="reverse">&nbsp;PAGE -p &lt;page&gt;&nbsp;</span> Go to page with required number.</div>
-<div style="padding:2px"><span class="reverse">&nbsp;NEWTOPIC -t &lt;title&gt; -c &lt;content&gt;&nbsp;</span> Create a new topic.</div>'.
+<div style="padding:2px"><span class="reverse">&nbsp;NEWTOPIC -t &lt;title&gt; -c &lt;content&gt;&nbsp;</span> Create a new topic.</div>
+<div style="padding:2px"><span class="reverse">&nbsp;NEWBOARD -n &lt;name&gt; -d &lt;description&gt;&nbsp;</span> Create a new board.</div>
+<div style="padding:2px"><span class="reverse">&nbsp;DELETEBOARD -n &lt;number&gt;&nbsp;</span> Delete a board.</div>'.
 (ALLOW_ANONYMOUS_POSTING
     ? '<div style="padding:2px"><span class="reverse">&nbsp;HIDEME&nbsp;</span> Hide your identity.</div> 
        <div style="padding:2px"><span class="reverse">&nbsp;SHOWME&nbsp;</span> Reveal your identity.</div>'
