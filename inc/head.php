@@ -31,6 +31,7 @@ echo $fonts->getCSS();
 <script src="js/scroll-startstop.events.jquery.js" type="text/javascript"></script>
 <script src="js/function_up_down.js" type="text/javascript"></script>
 <script src="js/main.js" type="text/javascript"></script>
+<?php if (USE_HWT): ?><script src="js/housewife.tools.local.js" type="text/javascript"></script><?php endif; ?>
 
 </head>
 <body class="native-scrollbar">

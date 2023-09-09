@@ -21,6 +21,6 @@
         </div>
     </div>
 </div>
-
 </body>
+<?php if (USE_HWT): ?><script>hwt_start()</script><?php endif; ?>
 </html>

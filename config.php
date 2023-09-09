@@ -19,6 +19,8 @@ define('ALLOW_ANONYMOUS_POSTING', true); // Whether or not HIDEME and SHOWME com
 define('ALLOW_USER_BOARDS', false); // Whether or not users should be allowed to create new boards
 define('BOARDS_PER_USER', 1); // How many boards a regular user can create; 0 for unlimited
 
+define('USE_HWT', false); // Whether or not Housewife-Tools should be served locally
+
 error_reporting(E_ALL ^ E_NOTICE);
 set_error_handler(function(int $errno, string $errstr) {
   if ((strpos($errstr, 'Undefined array key') === false) && (strpos($errstr, 'Undefined variable') === false)) {
