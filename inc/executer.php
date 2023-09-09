@@ -115,7 +115,7 @@ class Executer {
         $id = $args['f'];
         $fonts = new Fonts($id);
         if ($fonts->valid) {
-            Viewer::message('Font set: ' . $fonts->font['name'], $fonts->getCSS(true));
+            Viewer::message('Font set: ' . $fonts->font, $fonts->getCSS(true));
         }
         else {
             Viewer::error('Font #'.$id.' not found. Select the font from 0 to '.($fonts->total - 1));
@@ -128,7 +128,7 @@ class Executer {
         $fonts = Fonts::get_all();
         $msg = '';
         foreach($fonts as $i => &$font) {
-            $msg .= '['.$i.'] '.$font['name'].'<br>';
+            $msg .= '['.$i.'] '.$font.'<br>';
         }
         Viewer::message($msg);
     }

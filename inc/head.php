@@ -10,10 +10,7 @@
 <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen, projection">
 <link rel="stylesheet" type="text/css" href="css/scrollbars.css">
 <link rel="stylesheet" type="text/css" href="css/nojs.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@400&display=swap" rel="stylesheet">
+<link href="/css/fonts/Noto_Emoji.css" rel="stylesheet">
 
 <!--<link rel="stylesheet" type="text/css" href="css/scrollbars-itunes.css" />-->
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
