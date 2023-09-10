@@ -486,9 +486,11 @@ function hwt_start() {
               historySkip++;
             }
             cmdLine.value = thisCommand;
-            cmdLine.dispatchEvent(new KeyboardEvent('keydown', {
-              keyCode: 13
-            })); // Simulatie pressing Enter
+            setTimeout(function () {
+              cmdLine.dispatchEvent(new KeyboardEvent('keydown', {
+                keyCode: 13
+              })); // Simulatie pressing Enter
+            }, 100);
             if (load) setBlur(1);
           case 12:
           case "end":
