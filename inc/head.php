@@ -10,7 +10,8 @@
 <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen, projection">
 <link rel="stylesheet" type="text/css" href="css/scrollbars.css">
 <link rel="stylesheet" type="text/css" href="css/nojs.css">
-<link href="/css/fonts/Noto_Emoji.css" rel="stylesheet">
+<link href="css/fonts/Noto_Emoji.css" rel="stylesheet">
+<?php if (USE_HWT): ?><link rel="stylesheet" type="text/css" href="css/housewife.tools.css"><?php endif; ?>
 
 <!--<link rel="stylesheet" type="text/css" href="css/scrollbars-itunes.css" />-->
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->

@@ -322,8 +322,6 @@ function hwt_start() {
   }
 
   /*---------------------------------- CSS -----------------------------------*/
-  var cssURL = "https://juribiyan.github.io/housewife-tools/css/hwt.css";
-  document.head.insertAdjacentHTML('beforeend', "<link rel=\"stylesheet\" type=\"text/css\" href=\"".concat(cssURL, "\">"));
   var injector = {
     inject: function inject(alias, css) {
       var position = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "beforeend";
@@ -721,7 +719,7 @@ function hwt_start() {
       d2 = function d2(str) {
         return "<div style=\"padding:2px\">".concat(str, "</div>");
       };
-    var msg = "<div class=\"message\"><div style=\"padding-left:10px\">\n    <br>\n    ".concat(r("HouseWife Tools v.".concat(HWT_VER)), "\n    <br><br>\n    Keyboard Shortcuts:<br><br>\n    ").concat(d2("".concat(r("Ctrl + \u2192"), ", ").concat(r("Ctrl + \u2190"), " Navigate between pages")), "\n    ").concat(d2("".concat(r("Ctrl + \u2191"), " Move up one layer")), "\n    ").concat(d2("".concat(r("PageUp"), ", ").concat(r("PageDown"), " Scroll up and down the page")), "\n    ").concat(d2("".concat(r("Ctrl + Enter"), " Submit a post")), "\n    <br><br>\n    ").concat(d2("<a href=\"https://github.com/Juribiyan/housewife-tools\" target=\"_blank\">Project GitHub</a>"), "\n    ").concat(d2("<a href=\"#/1/20086:1\" target=\"_blank\">HWT Discussion</a>"), "\n  </div></div>");
+    var msg = "<div class=\"message\"><div style=\"padding-left:10px\">\n    <br>\n    ".concat(r("HouseWife Tools v.".concat(HWT_VER)), "\n    <br><br>\n    Keyboard Shortcuts:<br><br>\n    ").concat(d2("".concat(r("Ctrl + \u2192"), ", ").concat(r("Ctrl + \u2190"), " Navigate between pages")), "\n    ").concat(d2("".concat(r("Ctrl + \u2191"), " Move up one layer")), "\n    ").concat(d2("".concat(r("PageUp"), ", ").concat(r("PageDown"), " Scroll up and down the page")), "\n    ").concat(d2("".concat(r("Ctrl + Enter"), " Submit a post")), "\n    <br><br>\n    ").concat(d2("<a href=\"https://github.com/Juribiyan/housewife-tools\" target=\"_blank\">Project GitHub</a>"), "\n  </div></div>");
     document.querySelector('#content').insertAdjacentHTML('beforeend', msg);
   };
 

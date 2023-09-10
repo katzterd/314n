@@ -234,9 +234,6 @@ function handleTopic(content, boardID, boardName, topicID) {
 }
 
 /*---------------------------------- CSS -----------------------------------*/
-let cssURL = `https://juribiyan.github.io/housewife-tools/css/hwt.css`
-document.head.insertAdjacentHTML('beforeend', `<link rel="stylesheet" type="text/css" href="${cssURL}">`)
-
 var injector = {
   inject: function(alias, css, position="beforeend") {
   var id = `injector:${alias}`
@@ -626,7 +623,6 @@ actions.hwtinfo = () => {
     ${d2(`${r(`Ctrl + Enter`)} Submit a post`)}
     <br><br>
     ${d2(`<a href="https://github.com/Juribiyan/housewife-tools" target="_blank">Project GitHub</a>`)}
-    ${d2(`<a href="#/1/20086:1" target="_blank">HWT Discussion</a>`)}
   </div></div>`
   document.querySelector('#content').insertAdjacentHTML('beforeend', msg)
 }
