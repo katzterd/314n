@@ -2,7 +2,7 @@
 
 function hwt_start() {
     
-const HWT_VER = '1.1.8'
+const HWT_VER = '1.1.9'
 
 /*-------------------------------- Routing ---------------------------------*/
 const MO = new MutationObserver(observe)

@@ -19,7 +19,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 function hwt_start() {
   var _runCommand, _quitEditingContext, _submitEdit, _softCommand;
-  var HWT_VER = '1.1.8';
+  var HWT_VER = '1.1.9';
 
   /*-------------------------------- Routing ---------------------------------*/
   var MO = new MutationObserver(observe);
