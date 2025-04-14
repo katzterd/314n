@@ -2,7 +2,7 @@ FROM golang:1.24.2 AS builder
 
 WORKDIR /builder
 
-ADD ./scripts .
+ADD ./scripts/createadmin .
 
 RUN CGO_ENABLED=0 go build .
 
