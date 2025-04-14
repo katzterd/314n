@@ -1,5 +1,9 @@
 <?php
-require_once realpath(dirname(__FILE__)).'/../config.php';
+$env = getenv();
+foreach($env as $k => $v) {
+	define($k, $v);
+}
+//require_once realpath(dirname(__FILE__)).'/../config.php';
 require_once realpath(dirname(__FILE__)).'/viewer.php';
 
 mb_internal_encoding('UTF-8');
@@ -13,10 +17,10 @@ class Executer {
 
     
     public function __construct() {
-        $this->connection = new mysqli(DB_HOST, DB_USER, DB_PASSWD, DB_DATABASE);
-        $this->connection->query("SET NAMES '".DB_CHARSET."'"); 
-        $this->connection->query("SET CHARACTER SET '".DB_CHARSET."'");
-        $this->connection->query("SET SESSION collation_connection = '".DB_COLLATION."'");
+        $this->connection = new mysqli(MARIADB_HOST, MARIADB_USER, MARIADB_PASSWORD, MARIADB_DATABASE);
+        $this->connection->query("SET NAMES '".MARIADB_CHARSET."'"); 
+        $this->connection->query("SET CHARACTER SET '".MARIADB_CHARSET."'");
+        $this->connection->query("SET SESSION collation_connection = '".MARIADB_COLLATION."'");
         
         @$user_timezone_row = $this->connection->query('SELECT timezone, banned FROM users WHERE id = "'.$_SESSION['user_id'].'"')->fetch_assoc();
         if ($user_timezone_row)
@@ -32,7 +36,7 @@ class Executer {
         
         $this->connection->query('
             UPDATE users SET
-              ip = "'.(STORE_USER_IP ? $_SERVER['REMOTE_ADDR'] : '').'",
+              ip = "'.(STORE_USER_IP == 'true' ? $_SERVER['REMOTE_ADDR'] : '').'",
               last_activity = NOW()
             WHERE id = "'.$_SESSION['user_id'].'"');
         
@@ -60,8 +64,8 @@ class Executer {
             )->fetch_assoc();
         }
         // Create a guest account or login with IP
-        if (!$user && ALLOW_GUESTS) {
-            $use_ip = IDENTIFY_GUESTS_BY_IP && !in_array($_SERVER['REMOTE_ADDR'], explode(' ', LOCAL_IP_LIST));
+        if (!$user && ALLOW_GUESTS == 'true') {
+            $use_ip = IDENTIFY_GUESTS_BY_IP == 'true' && !in_array($_SERVER['REMOTE_ADDR'], explode(' ', LOCAL_IP_LIST));
             $pwd_src = $use_ip
                 ? $_SERVER['REMOTE_ADDR']
                 : random_bytes(32);
@@ -955,7 +959,7 @@ class Executer {
 
     private function NEWBOARD($args) {
         $user = $this->connection->query('SELECT id, name, authority FROM users WHERE id="'.$_SESSION['user_id'].'"')->fetch_assoc();
-        if (ALLOW_USER_BOARDS) {
+        if (ALLOW_USER_BOARDS == 'true') {
             if (substr($user['name'], 0, 6) == 'guest#') {
                 Viewer::error('Board creation for guests is not allowed');
                 return;
