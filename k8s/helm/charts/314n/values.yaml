@@ -43,6 +43,6 @@ svc:
     name: db
     image:
       name: mariadb
-      tag: "11.8"
+      tag: "11.6"
       pullPolicy: IfNotPresent
       replicas: 1

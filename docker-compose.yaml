@@ -17,7 +17,7 @@ services:
       - bridge
       
   db:
-    image: mariadb:11.8
+    image: mariadb:11.6
     container_name: db
     ports:
       - "3306:3306"
