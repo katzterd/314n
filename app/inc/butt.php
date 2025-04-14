@@ -22,5 +22,5 @@
     </div>
 </div>
 </body>
-<?php if (USE_HWT): ?><script>hwt_start()</script><?php endif; ?>
+<?php if (USE_HWT == 'true'): ?><script>hwt_start()</script><?php endif; ?>
 </html>

@@ -1,3 +1,11 @@
-# Node
-node_modules
-package-lock.json
+/*
+!/app
+!/i2pgate
+!/k8s
+!/torgate
+!/yggdrasil
+!/.github
+!/docker-compose.yaml
+!/README.md
+!/.env-dist
+!/.gitignore

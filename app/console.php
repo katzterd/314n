@@ -112,7 +112,7 @@ class Console
                     'session' => array(0=>array(), 1=>array('user_id'))
                 )
         );
-        if (ALLOW_ANONYMOUS_POSTING) {
+        if (ALLOW_ANONYMOUS_POSTING == 'true') {
             $commands = array(
                 'HIDEME' => array(
                     'args' => array(),

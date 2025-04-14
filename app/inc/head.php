@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="css/scrollbars.css">
 <link rel="stylesheet" type="text/css" href="css/nojs.css">
 <link href="css/fonts/Noto_Emoji.css" rel="stylesheet">
-<?php if (USE_HWT): ?><link rel="stylesheet" type="text/css" href="css/housewife.tools.css"><?php endif; ?>
+<?php if (USE_HWT == 'true'): ?><link rel="stylesheet" type="text/css" href="css/housewife.tools.css"><?php endif; ?>
 
 <!--<link rel="stylesheet" type="text/css" href="css/scrollbars-itunes.css" />-->
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -32,7 +32,7 @@ echo $fonts->getCSS();
 <script src="js/scroll-startstop.events.jquery.js" type="text/javascript"></script>
 <script src="js/function_up_down.js" type="text/javascript"></script>
 <script src="js/main.js" type="text/javascript"></script>
-<?php if (USE_HWT): ?><script src="js/housewife.tools.local.js" type="text/javascript"></script><?php endif; ?>
+<?php if (USE_HWT == 'true'): ?><script src="js/housewife.tools.local.js" type="text/javascript"></script><?php endif; ?>
 
 </head>
 <body class="native-scrollbar">
