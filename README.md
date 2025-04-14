@@ -1,6 +1,8 @@
 # 314n
 *opensource console board | since 2012*
 
+![CI](https://img.shields.io/github/actions/workflow/status/katzterd/314n/docker-build.yml?label=CI&logo=github&style=for-the-badge)
+
 ## Installation
 
 ### Docker compose way

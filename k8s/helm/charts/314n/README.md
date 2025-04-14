@@ -27,7 +27,7 @@ helm -n <namespace> delete <my-release>
 | `svc.torgate.enable`                       | "true" to enable torgate                      | None (Disabled)                                         |
 | `svc.i2pgate.enable`                       | "true" to enable i2pgate                      | None (Disabled)                                         |
 | `svc.yggdrasilgate.enable`                 | "true" to enable yggdrasilgate                | None (Disabled)                                         |
-| `registry`                                 | Override Container registry                   | `ghcr.io/katzterd/314n`                                |
+| `registry`                                 | Override Container registry                   | `ghcr.io/katzterd/314n`                                 |
 | `secretsName`                              | Override secrets name                         | `314n-secrets`                                          |
 | `storageClass.name`                        | Override storage class name                   | `314n-sc`                                               |
 | `dbSpace`                                  | Size of database free space (in Gi)           | `25Gi`                                                  |
@@ -43,5 +43,5 @@ kubectl -n <namespace> create secret generic <imagePullSecretName> \
 
 ## Get yggdrasil node address (if enabled)
 ```console
-kubectl -n <namespace> exec -t deployments/yggdrasil -- /docker-entrypoint.sh getaddr
+kubectl -n <namespace> exec -t deployments/<my-release>-yggdrasilgate -- /docker-entrypoint.sh getaddr
 ```
