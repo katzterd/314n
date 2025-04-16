@@ -20,7 +20,7 @@ $ docker compose up -d
 
 #### 3. Setup db and admin account
 ```
-$ docker exec -t app /app/config/docker-entrypoint.sh createdb createadmin
+$ docker exec -t app /src/config/docker-entrypoint.sh createdb createadmin
 ```
 you can simply remove  `createadmin`  from this line, if you don't need admin account
 

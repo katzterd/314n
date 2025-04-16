@@ -48,7 +48,7 @@ helm upgrade --install <my-release> 314n/314n \
 
 #### 5. Set up db and admin account
 ```console
-kubectl -n <namespace> exec -t deployments/<my-release>-app -- /app/config/docker-entrypoint.sh createdb createadmin
+kubectl -n <namespace> exec -t deployments/<my-release>-app -- /src/config/docker-entrypoint.sh createdb createadmin
 ```
 
 #### 7. (Optional) Expose to clearnet
