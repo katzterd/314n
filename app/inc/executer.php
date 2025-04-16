@@ -604,8 +604,8 @@ class Executer {
         } else {
             
             $res_post = $this->connection->query('
-                INSERT INTO posts (user_id, board_id, topic_id, content, creation_date, hidden)
-                VALUES ("'.$_SESSION['user_id'].'", "'.$_SESSION['board_id'].'", "'.$_SESSION['topic_id'].'", "'.$args['m'].'", NOW(), "'.(@$_SESSION['hidden']==1 ? 1 : 0).'")
+                INSERT INTO posts (user_id, board_id, title, topic_id, content, creation_date, hidden)
+                VALUES ("'.$_SESSION['user_id'].'", "'.$_SESSION['board_id'].'", "'.$_SESSION['title'].'", "'.$_SESSION['topic_id'].'", "'.$args['m'].'", NOW(), "'.(@$_SESSION['hidden']==1 ? 1 : 0).'")
             ');
             
             $this->connection->query('UPDATE posts SET bump_date = NOW() WHERE id = "'.$_SESSION['topic_id'].'"');            

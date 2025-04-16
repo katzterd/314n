@@ -45,6 +45,10 @@ items:
           env:
           - name: MARIADB_HOST
             value: {{ .Values.svc.db.name }}
+          - name: MARIADB_CHARSET
+            value: utf8mb4
+          - name: MARIADB_COLLATION
+            value: utf8mb4_unicode_ci
           - name: MARIADB_DATABASE
             valueFrom:
               secretKeyRef:
