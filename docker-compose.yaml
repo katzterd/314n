@@ -14,7 +14,7 @@ services:
      MARIADB_CHARSET: utf8mb4
      MARIADB_COLLATION: utf8mb4_unicode_ci
     networks:
-      - bridge
+      - 314n
       
   db:
     image: mariadb:11.6
@@ -28,7 +28,7 @@ services:
     environment:
       MARIADB_RANDOM_ROOT_PASSWORD: 1
     networks:
-      - bridge
+      - 314n
 
   torgate:
     build: ./torgate
@@ -40,7 +40,7 @@ services:
     env_file:
       - .env
     networks:
-      - bridge
+      - 314n
         
   i2pgate:
     build: ./i2pgate
@@ -52,7 +52,7 @@ services:
     env_file:
       - .env
     networks:
-      - bridge
+      - 314n
         
   yggdrasil:
     build: ./yggdrasil
@@ -64,7 +64,7 @@ services:
     env_file:
       - .env
     networks:
-      - bridge
+      - 314n
     cap_add:
       - NET_ADMIN
     devices:
@@ -73,7 +73,7 @@ services:
       - "net.ipv6.conf.all.disable_ipv6=0"
     
 networks:
-  bridge:
+  314n:
 
 volumes:
   mariadb_data:
