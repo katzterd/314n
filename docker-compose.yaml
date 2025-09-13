@@ -1,5 +1,4 @@
 services:
-
   app:
     build: ./app
     container_name: app
@@ -10,12 +9,12 @@ services:
     env_file:
       - .env
     environment:
-     MARIADB_HOST: db
-     MARIADB_CHARSET: utf8mb4
-     MARIADB_COLLATION: utf8mb4_unicode_ci
+      MARIADB_HOST: db
+      MARIADB_CHARSET: utf8mb4
+      MARIADB_COLLATION: utf8mb4_unicode_ci
     networks:
       - 314n
-      
+
   db:
     image: mariadb:11.6
     container_name: db
@@ -41,7 +40,7 @@ services:
       - .env
     networks:
       - 314n
-        
+
   i2pgate:
     build: ./i2pgate
     container_name: i2pgate
@@ -53,10 +52,10 @@ services:
       - .env
     networks:
       - 314n
-        
-  yggdrasil:
-    build: ./yggdrasil
-    container_name: yggdrasil
+
+  yggdrasilgate:
+    build: ./yggdrasilgate
+    container_name: yggdrasilgate
     depends_on:
       app:
         condition: service_started
@@ -71,7 +70,7 @@ services:
       - /dev/net/tun
     sysctls:
       - "net.ipv6.conf.all.disable_ipv6=0"
-    
+
 networks:
   314n:
 
