@@ -2,6 +2,20 @@ apiVersion: v1
 entries:
   314n:
   - apiVersion: v2
+    appVersion: 2.0.0
+    created: "2025-09-13T16:03:31.70578005Z"
+    description: 314n k8s helm chart.
+    digest: 7707afd7c56637d8c9f99052379ead62d2d134eb9b2929cb31928693c81342f3
+    home: https://github.com/katzterd/314n
+    name: 314n
+    sources:
+    - https://github.com/katzterd/314n
+    - https://github.com/katzterd/314n/tree/main/k8s/helm
+    type: application
+    urls:
+    - https://github.com/katzterd/314n/releases/download/314n-1.1.0/314n-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
     appVersion: 1.0.0
     created: "2025-04-16T12:26:32.734802558Z"
     description: 314n k8s helm chart.
@@ -15,4 +29,4 @@ entries:
     urls:
     - https://github.com/katzterd/314n/releases/download/314n-0.1.1/314n-0.1.1.tgz
     version: 0.1.1
-generated: "2025-04-16T12:26:32.734812717Z"
+generated: "2025-09-13T16:03:31.705788737Z"
