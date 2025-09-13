@@ -1,48 +1,238 @@
-defaultSecretsName: 314n-secrets
-defaultRegistry: ghcr.io/katzterd/314n
-    
-storageClass:
-  defaultName: "314n-sc"
-  accessMode: "ReadWriteOnce"
-  pods:
-    db:
-      defaultRequestSpace: 25Gi
+Registry: ghcr.io/katzterd/314n
 
-restartPolicy: Always
+imagePullSecrets: []
+# - name: "image-pull-secret"
 
-svc:
-  app:
-    name: app
-    image:
-      name: 314n
-      tag: latest
-      pullPolicy: Always
-      replicas: 1
-  torgate:
-    name: torgate
-    image:
-      name: torgate
-      tag: latest
-      pullPolicy: Always
-      replicas: 1
-  i2pgate:
-    name: i2pgate
-    image:
-      name: i2pgate
-      tag: latest
-      pullPolicy: Always
-      replicas: 1
-  yggdrasilgate:
-    name: yggdrasilgate
-    image:
-      name: yggdrasil
-      tag: latest
-      pullPolicy: Always
-      replicas: 1
-  db:
-    name: db
-    image:
-      name: mariadb
-      tag: "11.6"
-      pullPolicy: IfNotPresent
-      replicas: 1
+## Main secret name
+secret: ""
+
+## Application configuration
+
+app:
+  ## Additional pod Labels for app
+  podLabels: {}
+
+  ## podAnnotations for app
+  podAnnotations: {}
+
+  ## Pod Replicas
+  replicas: 1
+
+  ## Container image settings
+  image:
+    tag: latest
+    pullPolicy: Always
+
+  env:
+    - name: MARIADB_HOST
+      value: db
+    - name: MARIADB_CHARSET
+      value: utf8mb4
+    - name: MARIADB_COLLATION
+      value: utf8mb4_unicode_ci
+    - name: MARIADB_DATABASE
+      valueFrom:
+        secretKeyRef:
+          key: MARIADB_DATABASE
+          name: "{{ .Values.secret }}"
+    - name: MARIADB_USER
+      valueFrom:
+        secretKeyRef:
+          key: MARIADB_USER
+          name: "{{ .Values.secret }}"
+    - name: MARIADB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: MARIADB_PASSWORD
+          name: "{{ .Values.secret }}"
+    - name: ADMIN_LOGIN
+      valueFrom:
+        secretKeyRef:
+          key: ADMIN_LOGIN
+          name: "{{ .Values.secret }}"
+    - name: ADMIN_PASSWD
+      valueFrom:
+        secretKeyRef:
+          key: ADMIN_PASSWD
+          name: "{{ .Values.secret }}"
+    - name: HASHING_SALT
+      valueFrom:
+        secretKeyRef:
+          key: HASHING_SALT
+          name: "{{ .Values.secret }}"
+    - name: PUBLIC_HASHING_SALT
+      valueFrom:
+        secretKeyRef:
+          key: PUBLIC_HASHING_SALT
+          name: "{{ .Values.secret }}"
+    - name: USE_HWT
+      valueFrom:
+        secretKeyRef:
+          key: USE_HWT
+          name: "{{ .Values.secret }}"
+    - name: ALLOW_LEGACY_HASHES
+      valueFrom:
+        secretKeyRef:
+          key: ALLOW_LEGACY_HASHES
+          name: "{{ .Values.secret }}"
+    - name: ALLOW_GUESTS
+      valueFrom:
+        secretKeyRef:
+          key: ALLOW_GUESTS
+          name: "{{ .Values.secret }}"
+    - name: IDENTIFY_GUESTS_BY_IP
+      valueFrom:
+        secretKeyRef:
+          key: IDENTIFY_GUESTS_BY_IP
+          name: "{{ .Values.secret }}"
+    - name: ALLOW_ANONYMOUS_POSTING
+      valueFrom:
+        secretKeyRef:
+          key: ALLOW_ANONYMOUS_POSTING
+          name: "{{ .Values.secret }}"
+    - name: ALLOW_USER_BOARDS
+      valueFrom:
+        secretKeyRef:
+          key: ALLOW_USER_BOARDS
+          name: "{{ .Values.secret }}"
+    - name: STORE_USER_IP
+      valueFrom:
+        secretKeyRef:
+          key: STORE_USER_IP
+          name: "{{ .Values.secret }}"
+    - name: LOCAL_IP_LIST
+      valueFrom:
+        secretKeyRef:
+          key: LOCAL_IP_LIST
+          name: "{{ .Values.secret }}"
+    - name: GUEST_ACCOUNT_TTL
+      valueFrom:
+        secretKeyRef:
+          key: GUEST_ACCOUNT_TTL
+          name: "{{ .Values.secret }}"
+    - name: BOARDS_PER_USER
+      valueFrom:
+        secretKeyRef:
+          key: BOARDS_PER_USER
+          name: "{{ .Values.secret }}"
+    - name: TORGATE_HOSTNAME
+      valueFrom:
+        secretKeyRef:
+          key: TORGATE_HOSTNAME
+          name: "{{ .Values.secret }}"
+          optional: true
+
+db:
+  ## Additional pod Labels for db
+  podLabels: {}
+
+  ## podAnnotations for db
+  podAnnotations: {}
+
+  ## Pod Replicas
+  replicas: 1
+
+  ## Container image settings
+  image:
+    tag: "11.6"
+    pullPolicy: IfNotPresent
+
+  persistentVolume:
+    storageClass:
+      accessMode: "ReadWriteOnce"
+    size: 25Gi
+
+  env:
+    - name: MARIADB_RANDOM_ROOT_PASSWORD
+      value: "1"
+    - name: MARIADB_DATABASE
+      valueFrom:
+        secretKeyRef:
+          key: MARIADB_DATABASE
+          name: "{{ .Values.secret }}"
+    - name: MARIADB_USER
+      valueFrom:
+        secretKeyRef:
+          key: MARIADB_USER
+          name: "{{ .Values.secret }}"
+    - name: MARIADB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: MARIADB_PASSWORD
+          name: "{{ .Values.secret }}"
+
+torgate:
+  ## Additional pod Labels for torgate
+  podLabels: {}
+
+  ## podAnnotations for torgate
+  podAnnotations: {}
+
+  ## Pod Replicas
+  replicas: 1
+
+  ## Container image settings
+  image:
+    tag: latest
+    pullPolicy: Always
+
+  env:
+    - name: TORGATE_HOSTNAME
+      valueFrom:
+        secretKeyRef:
+          key: TORGATE_HOSTNAME
+          name: "{{ .Values.secret }}"
+    - name: TORGATE_PUBLIC_KEY
+      valueFrom:
+        secretKeyRef:
+          key: TORGATE_PUBLIC_KEY
+          name: "{{ .Values.secret }}"
+    - name: TORGATE_PRIVATE_KEY
+      valueFrom:
+        secretKeyRef:
+          key: TORGATE_PRIVATE_KEY
+          name: "{{ .Values.secret }}"
+
+i2pgate:
+  ## Additional pod Labels for i2pgate
+  podLabels: {}
+
+  ## podAnnotations for i2pgate
+  podAnnotations: {}
+
+  ## Pod Replicas
+  replicas: 1
+
+  ## Container image settings
+  image:
+    tag: latest
+    pullPolicy: Always
+
+  env:
+    - name: I2PGATE_PRIVATE_KEY
+      valueFrom:
+        secretKeyRef:
+          key: I2PGATE_PRIVATE_KEY
+          name: "{{ .Values.secret }}"
+
+yggdrasilgate:
+  ## Additional pod Labels for yggdrasilgate
+  podLabels: {}
+
+  ## podAnnotations for yggdrasilgate
+  podAnnotations: {}
+
+  ## Pod Replicas
+  replicas: 1
+
+  ## Container image settings
+  image:
+    tag: latest
+    pullPolicy: Always
+
+  env:
+    - name: YGGDRASILGATE_PRIVATE_KEY
+      valueFrom:
+        secretKeyRef:
+          key: YGGDRASILGATE_PRIVATE_KEY
+          name: "{{ .Values.secret }}"

@@ -23,11 +23,11 @@ RUN apt-get update && \
 
 WORKDIR /src
 
-ADD ./config    ./config
+ADD config /
 
-COPY --from=builder /builder/createadmin ./config/createadmin
+COPY --from=builder /builder/createadmin /
 
-RUN chmod +x ./config/createadmin
+RUN chmod +x /createadmin
 
 WORKDIR /src/app
 
@@ -42,4 +42,4 @@ RUN chown -R 33:33 /src/app
 
 EXPOSE 80
 
-ENTRYPOINT [ "/bin/bash", "-c", "/src/config/docker-entrypoint.sh" ]
+CMD [ "bash", "/docker-entrypoint.sh" ]
