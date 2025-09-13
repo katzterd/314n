@@ -1,40 +1,56 @@
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-db
+  name: {{ .Release.Name }}-app
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: {{ .Values.db.replicas }}
-  serviceName: "db"
-  minReadySeconds: 10
+  replicas: {{ .Values.app.replicas }}
   selector:
     matchLabels:
-      name: db
+      name: app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
   template:
     metadata:
       labels:
-        name: db
-        {{- with .Values.db.podLabels }}
+        name: app
+        {{- with .Values.app.podLabels }}
         {{ toYaml . }}
         {{- end }}
-      {{- with .Values.db.podAnnotations }}
+      {{- with .Values.app.podAnnotations }}
       annotations:
         {{ toYaml . }}
       {{- end }}
     spec:
-      hostname: db
+      hostname: app
       restartPolicy: Always
-      terminationGracePeriodSeconds: 30
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{ toYaml .Values.imagePullSecrets }}
+      {{- end }}
+      initContainers:
+      - name: wait-db
+        image: alpine/curl
+        imagePullPolicy: IfNotPresent
+        command:
+        - sh
+        - -c
+        - |
+          until curl http://db:3306 2>&1 | grep -q "1"; do 
+            sleep 1
+          done
       containers:
-      - name: mariadb
-        image: mariadb:{{ .Values.db.image.tag }}
-        imagePullPolicy: {{ .Values.db.image.pullPolicy }}
+      - name: app
+        image: {{ .Values.Registry }}/app:{{ .Values.app.image.tag }}
+        imagePullPolicy: {{ .Values.app.image.pullPolicy }}
         ports:
-        - containerPort: 3306
+        - containerPort: 80
           protocol: TCP
         {{- $secretName := .Values.secret | default "314n-secret" }}
-        {{- with .Values.db.env }}
+        {{- with .Values.app.env }}
         env:
           {{- range . }}
           - name: {{ .name }}
@@ -53,33 +69,17 @@ spec:
             {{- end }}
             {{- end }}
         {{- end }}
-        volumeMounts:
-        - name: {{ .Release.Name }}-db-pvc
-          mountPath: /var/lib/mysql
-          subPath: mariadb_data
-  volumeClaimTemplates:
-  - apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      name: {{ .Release.Name }}-db-pvc
-    spec:
-      accessModes: [ {{ .Values.db.persistentVolume.storageClass.accessMode }} ]
-      resources:
-        requests:
-          storage: "{{ .Values.db.persistentVolume.size }}"
-      storageClassName: {{ .Values.db.persistentVolume.storageClass.name | default "" }}
-      volumeMode: Filesystem
----            
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: db
+  name: app
   namespace: {{ .Release.Namespace }}
 spec:
   selector:
-    name: db
+    name: app
   ports:
   - protocol: TCP
-    port: 3306
-    targetPort: 3306
+    port: 80
+    targetPort: 80
   clusterIP: None
