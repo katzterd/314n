@@ -34,7 +34,8 @@ func createAdmin(usr users) error {
 }
 
 func main() {
-	db, _ = sql.Open("mysql", (&mysql.Config{
+	var err error
+	db, err = sql.Open("mysql", (&mysql.Config{
 		User:                 os.Getenv("MARIADB_USER"),
 		Passwd:               os.Getenv("MARIADB_PASSWORD"),
 		Net:                  "tcp",
@@ -42,8 +43,11 @@ func main() {
 		DBName:               os.Getenv("MARIADB_DATABASE"),
 		AllowNativePasswords: true,
 	}).FormatDSN())
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	if err := createAdmin(users{
+	if err = createAdmin(users{
 		id:        1,
 		name:      os.Getenv("ADMIN_LOGIN"),
 		password:  crypt(),

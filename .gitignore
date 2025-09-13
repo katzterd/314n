@@ -3,7 +3,7 @@
 !/i2pgate
 !/k8s
 !/torgate
-!/yggdrasil
+!/yggdrasilgate
 !/.github
 !/docker-compose.yaml
 !/README.md

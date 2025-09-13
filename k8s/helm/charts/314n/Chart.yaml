@@ -1,7 +1,7 @@
 apiVersion: v2
 name: 314n
-version: 0.1.1
-appVersion: "1.0.0"
+version: 1.1.0
+appVersion: "2.0.0"
 description: 314n k8s helm chart.
 home: https://github.com/katzterd/314n
 sources:
@@ -9,4 +9,3 @@ sources:
   - https://github.com/katzterd/314n/tree/main/k8s/helm
 
 type: application
-
